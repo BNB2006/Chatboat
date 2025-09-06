@@ -1,12 +1,108 @@
-# React + Vite
+# 🤖 AI Chatbot (React + Tailwind + Google Gemini)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a simple **AI Chatbot** project built with **React (frontend)** and **Express (backend)**.  
+It connects to **Google Gemini API** (`gemini-1.5-flash`) to generate real-time responses.  
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
+- 💬 Chat with AI (powered by Google Gemini)  
+- 🎨 Clean and responsive UI (Tailwind CSS)  
+- 🧭 Auto-scroll chat area  
+- 📋 Copy messages with one click  
+- 🔄 Clear chat history button  
+- 🔒 Secure API key handling with `.env`  
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📂 Project Structure
+```
+
+project-root/
+├── client/                # React frontend
+│   └── src/
+│       ├── components/
+│       │   ├── Avatar.jsx
+│       │   ├── Chat.jsx
+│       │   ├── CopyButton.jsx
+│       │   ├── Icons.jsx
+│       │   └── MessageBubble.jsx
+│       ├── services/
+│       │   └── api.js
+│       ├── App.jsx
+│       └── main.jsx
+├── server/                # Express backend
+│   ├── server.js
+│   └── .env
+└── README.md
+
+````
+
+---
+
+## ⚡ Setup & Installation
+
+1. **Clone this repo**
+    ```bash
+    git clone https://github.com/your-username/ai-chatbot.git
+    cd ai-chatbot
+    ```
+
+2. **Install dependencies**
+
+   * Frontend:
+
+     ```bash
+     cd client
+     npm install
+     ```
+   * Backend:
+
+     ```bash
+     cd ../server
+     npm install
+     ```
+
+3. **Set up environment variables**
+   Create a `.env` file inside the **server** folder:
+
+   ```
+   GEMINI_API_KEY=your_api_key_here
+   PORT=3001
+   ```
+
+   👉 Get your free API key from [Google AI Studio](https://aistudio.google.com/).
+
+4. **Run the project**
+
+   * Start backend (server):
+
+     ```bash
+     cd server
+     node server.js
+     ```
+   * Start frontend (client):
+
+     ```bash
+     cd client
+     npm run dev
+     ```
+
+---
+
+## 🎯 Usage
+
+* Open browser at: `http://localhost:5173` (Vite default port)
+* Type your question in the chatbox
+* Press **Enter** or click **Send**
+* The bot will reply instantly using Gemini
+* Switch models (`gemini-1.5-flash` / `gemini-1.5-pro`) from the dropdown
+
+
+## 🛠 Tech Stack
+
+* **React** (Frontend)
+* **Tailwind CSS** (Styling)
+* **Express** (Backend API)
+* **Google Gemini API** (AI responses)
+
+✨Thank you 
+---

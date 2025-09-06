@@ -1,3 +1,5 @@
+import { Asterisk } from "lucide-react"
+
 export default function Avatar({ role }){
 
     if(role === "error"){
@@ -18,7 +20,7 @@ export default function Avatar({ role }){
 
     return(
         <div className="w-8 h-8 flex items-center justify-center rounded-md bg-indigo-600 text-white font-bold">
-            AI
+            <Asterisk/>
         </div>
     )
 }
