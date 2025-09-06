@@ -1,16 +1,7 @@
-import Chat from "./components/chat";
+import Chat from "./components/Chat";
 
 export default function App(){
 return(
-    // <div className="flex flex-col h-screen">
-    //     <header className="p-4 bg-gray-900 text-white text-xl font-bold">
-    //         Siege
-    //     </header>
-
-    //     <main className="flex-1 flex-col bg-blue-100">
-    //         <Chat/>
-    //     </main>
-    // </div>
 
     <div className="flex flex-col h-screen bg-gray-700 text-gray-100">
         <header className="sticky top-0 z-10 flex items-center gap-3 px-4 py-3 border-b border-gray-800 bg-gray-900/80 backdrop-blur">
