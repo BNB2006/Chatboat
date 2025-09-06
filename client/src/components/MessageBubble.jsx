@@ -18,11 +18,9 @@ export default function MessageBubble({ role, text }){
 
                 <div>{text}</div>
 
-                {isError && (
-                    <div className="mt-2">
-                        <CopyButton text={text}/>
-                    </div>
-                )}
+                <div className="mt-2">
+                    <CopyButton text={text}/>
+                </div>
                 
             </div>
 
