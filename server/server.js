@@ -32,7 +32,7 @@ app.post("/api/chat", async (req, res) => {
     res.status(500).json({ error: err?.message || "Unknown error" });
   }
 });
-app.get("*", (req, res) => {
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
