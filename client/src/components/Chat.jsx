@@ -36,7 +36,7 @@ export default function Chat(){
             .concat(userMsg)
             .map(({ role, content }) => ({ role, content }));
 
-            const { text } = await sendChat({ model: "gpt-4.1-mini", messages: payload });
+            const { text } = await sendChat({ model: "gemini-1.5-flash", messages: payload });
 
             setMessages((m) => [
             ...m,

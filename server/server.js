@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import OpenAI from "openai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 dotenv.config();
 const app = express();
@@ -9,23 +9,20 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 app.get("/api/health", (req, res) => res.json({ ok: true }));
 
 app.post("/api/chat", async (req, res) => {
   try {
-    const { model = "gpt-4.1-mini", messages = [] } = req.body || {};
-    console.log("Incomming request:", {model, messages})
+    const { model = "gemini-4.1-mini", messages = [] } = req.body || {};
 
-    const response = await client.chat.completions.create({
-      model,
-      messages,
-    });
+    const conversation = messages.map(m => `${m.role}:${m.content}`).join("\n");
 
-    console.log("OpenAI response:", response)
+    const modelClient = genAI.getGenerativeModel({ model });
+    const result = await modelClient.generateContent(conversation);
 
-    const text = response.choices[0]?.message?.content || "(no response)";
+    const text = result.response.text() || "(no response)";
     res.json({ text });
   } catch (err) {
     console.error(err);
@@ -35,5 +32,5 @@ app.post("/api/chat", async (req, res) => {
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => 
-    console.log(`✅ API running at http://localhost:${PORT}`)
+    console.log(`✅ Gemini API running at http://localhost:${PORT}`)
 );
