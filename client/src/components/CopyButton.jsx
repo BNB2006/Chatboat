@@ -1,3 +1,4 @@
+import { Check, Copy } from "lucide-react";
 import React, { useState } from "react";
 
 export default function CopyButton({ text }) {
@@ -12,9 +13,9 @@ export default function CopyButton({ text }) {
   return (
     <button
       onClick={copy}
-      className="text-xs border rounded-md px-2 py-1 cursor-pointer"
+      className="cursor-pointer text-xs flex items-center gap-1"
     >
-      {done ? "Copied" : "Copy"}
+      {done ? <Check size={18}/> : <Copy size={14}/>}{done ? "Cpoied" : "Copy"}
     </button>
   );
 }

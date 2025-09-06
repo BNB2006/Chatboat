@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import MessageBubble from "./MessageBubble"
 import { sendChat } from "../svervices/api";
+import { SendHorizontal } from 'lucide-react';
 
 export default function Chat(){
     const [messages, setMessages] = useState([
@@ -64,33 +65,42 @@ export default function Chat(){
 return(
     <div className="flex flex-col flex-1 overflow-hidden"> 
 
-        <div ref={listRef} className="flex-1 overflow-y-auto p-4">
+        <div ref={listRef} className="flex-1 overflow-y-auto p-4 space-y-3">
             {messages.map((m) => (
                 <MessageBubble key={m.id} role={m.role} text={m.content}/>
             ))}
         </div>
 
         {loading && (
-            <div className="text-sm flex items-center gap-2 text-gray-500 mt-2">
-                <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-900 rounded-full animate-spin"></div>
+            <div className="flex items-center gap-2 text-sm text-gray-400">
+                <div className="w-4 h-4 border-2 border-white/40 border-t rounded-full animate-spin"></div>
                 Thinking...
             </div>
         )}
 
-        <div className="flex items-center gap-2 border-gray-300 p-4">
-            <textarea 
-                className="flex-1 resize-none p-2 bg-gray-400 rounded-lg focus:outline-none focus:ring focus:ring-blue-500"
-                rows={3}
-                placeholder="Ask me anything..."
-                value={input}
-                onChange={(e)=>setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
+      <div className="border-t border-gray-800 bg-gray-900 p-3">
+        <div className="max-w-3xl mx-auto">
+          <div className="flex bg-gray-800 rounded-2xl p-2">
+            <textarea
+              className="w-full resize-none bg-transparent text-gray-100 p-2 outline-none"
+              rows={2}
+              placeholder="Ask me anything…"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
             />
-            <button disabled={!canSend} onClick={handleSend}
-                className={`px-4 py-2 rounded-lg text-white ${canSend ? 'bg-blue-500 hover:bg-blue-600':'bg-blue-300 cursor-not-allowed'}`}>
-                {loading ? 'Sending' : 'Send'}
-            </button>
+              <div className="flex flex-col justify-end">
+                <button
+                  className="flex items-center gap-1 bg-indigo-600 hover:bg-indigo-700 px-3 py-1.5 rounded-md text-white disabled:opacity-50"
+                  disabled={!canSend}
+                  onClick={handleSend}
+                >
+                  <SendHorizontal />
+                </button>
+              </div>
+          </div>
         </div>
+      </div>
     </div>
 )
 }

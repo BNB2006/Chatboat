@@ -2,7 +2,7 @@ export default function Avatar({ role }){
 
     if(role === "error"){
         return(
-            <div className="w-8 h-8 flex items-center justify-center rounded-md bg-red-500 text-white font-bold">
+            <div className="w-8 h-8 flex items-center justify-center rounded-md bg-red-600 text-white font-bold">
                 !
             </div>
         )
