@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import MessageBubble from "./MessageBubble"
+import { sendChat } from "../svervices/api";
 
 export default function Chat(){
     const [messages, setMessages] = useState([
@@ -9,6 +10,7 @@ export default function Chat(){
     const listRef = useRef(null);
     const [loading, setLoading] = useState(false);
     const [input, setInput] = useState("");
+    const [error, setError] = useState("")
 
     const canSend = useMemo(()=> input.trim().length > 0 && !loading, [input, loading])
 
@@ -17,24 +19,40 @@ export default function Chat(){
     if (el) {
         el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
     }
-    }, [messages]);
+    }, [messages, loading]);
 
-    const handleSend = () => {
-        if(!canSend) return;
+    async function handleSend() {
+        if (!canSend) return;
+        setError("");
 
-        const userMsg = {id:crypto.randomUUID(), role:'user', content:input.trim()};
+        const userMsg = { id: crypto.randomUUID(), role: "user", content: input.trim() };
         setMessages((m) => [...m, userMsg]);
         setInput("");
         setLoading(true);
 
-        setTimeout(()=>{
+        try {
+            const payload = messages
+            .filter((m) => m.role !== "error")
+            .concat(userMsg)
+            .map(({ role, content }) => ({ role, content }));
+
+            const { text } = await sendChat({ model: "gpt-4.1-mini", messages: payload });
+
             setMessages((m) => [
-                ...m,
-                {id:crypto.randomUUID(), role:'assistant', content:'This is a fake reply (backend comming soon)...'}
+            ...m,
+            { id: crypto.randomUUID(), role: "assistant", content: text || "(No response)" },
             ]);
+        } catch (e) {
+            const msg = e instanceof Error ? e.message : String(e);
+            setMessages((m) => [
+            ...m,
+            { id: crypto.randomUUID(), role: "error", content: `⚠️ Request failed: ${msg}` },
+            ]);
+            setError(msg);
+        } finally {
             setLoading(false);
-        }, 1000);
-    }
+        }
+  }
 
     const handleKeyDown = (e) => {
         if(e.key === "Enter" && !e.shiftKey){
