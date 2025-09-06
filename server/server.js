@@ -1,36 +1,40 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import path from "path";
+import { fileURLToPath } from "url";
+import { GoogleGenerativeAI } from "@google/generative-ai"; 
 
 dotenv.config();
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, "dist")));
 
 app.get("/api/health", (req, res) => res.json({ ok: true }));
 
+const genAI = new GoogleGenerativeAI(process.env.VITE_GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
 app.post("/api/chat", async (req, res) => {
   try {
-    const { model = "gemini-4.1-mini", messages = [] } = req.body || {};
+    const { messages = [] } = req.body;
+    const prompt = messages.map(m => `${m.role}: ${m.content}`).join("\n");
 
-    const conversation = messages.map(m => `${m.role}:${m.content}`).join("\n");
-
-    const modelClient = genAI.getGenerativeModel({ model });
-    const result = await modelClient.generateContent(conversation);
-
-    const text = result.response.text() || "(no response)";
+    const result = await model.generateContent(prompt);
+    const text = result.response.text();
     res.json({ text });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err?.message || "Unknown error" });
   }
 });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => 
-    console.log(`✅ Gemini API running at http://localhost:${PORT}`)
-);
+app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
